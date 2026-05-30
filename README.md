@@ -2,7 +2,7 @@
 
 A lightweight Electron app for previewing active Todoist tasks and importing them into Donetick.
 
-FYI: This project was built collaboratively using AI through OpenAI Codex.
+*FYI: This project was built collaboratively using AI through OpenAI Codex.*
 
 ## Features
 
