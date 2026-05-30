@@ -1,6 +1,6 @@
 # Todoist to Donetick Importer
 
-A simple macOS app for moving active Todoist tasks into Donetick with a preview step before anything is created.
+A simple macOS app built on Electron, for importing Todoist tasks into Donetick.
 
 *FYI: This project was built collaboratively using AI through OpenAI Codex.*
 
