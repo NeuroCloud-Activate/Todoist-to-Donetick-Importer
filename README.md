@@ -2,7 +2,7 @@
 
 A simple macOS app for moving active Todoist tasks into Donetick with a preview step before anything is created.
 
-FYI: This project was built collaboratively using AI through OpenAI Codex.
+*FYI: This project was built collaboratively using AI through OpenAI Codex.*
 
 ## Download
 
