@@ -1,8 +1,0 @@
-node_modules/
-dist/
-out/
-coverage/
-.env
-.env.*
-*.log
-local-settings.json

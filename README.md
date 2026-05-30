@@ -14,14 +14,9 @@ FYI: This project was built collaboratively using AI through OpenAI Codex.
 - Preserves Todoist metadata that Donetick cannot represent directly inside the Donetick chore description.
 - Keeps Todoist tokens, Donetick server URLs, and Donetick API keys configurable at runtime. No private values are included in this repository.
 
-## Project Layout
-
-The GitHub-ready application source lives in [`shareable/`](shareable/).
-
 ## Setup
 
 ```sh
-cd shareable
 npm install
 npm start
 ```
@@ -31,32 +26,29 @@ npm start
 Build a standalone `.app` bundle:
 
 ```sh
-cd shareable
 npm run package:mac
 ```
 
 The output is:
 
-- `shareable/dist/mac/Todoist Donetick Importer.app`
-- `shareable/dist/mac/Todoist Donetick Importer Data/`
+- `dist/mac/Todoist Donetick Importer.app`
+- `dist/mac/Todoist Donetick Importer Data/`
 
 For portability, keep the data folder next to the `.app`. The packaged app stores saved settings and Todoist snapshot cache in that sibling data folder instead of macOS Application Support. Do not publish the data folder after entering real Todoist or Donetick credentials.
 
 Run tests:
 
 ```sh
-cd shareable
 npm test
 ```
 
 Create a GitHub release-ready macOS zip:
 
 ```sh
-cd shareable
 npm run package:mac:release
 ```
 
-The release zip is written to `shareable/dist/release/` and contains the `.app` bundle only. Do not upload the sibling portable data folder if you have entered real credentials or synced real Todoist data.
+The release zip is written to `dist/release/` and contains the `.app` bundle only. Do not upload the sibling portable data folder if you have entered real credentials or synced real Todoist data.
 
 ## Runtime Configuration
 
@@ -96,4 +88,4 @@ The repository does not include Todoist tokens, Donetick server URLs, Donetick A
 
 ## Mapping Strategy
 
-See [`shareable/docs/API_MAPPING.md`](shareable/docs/API_MAPPING.md) for field-level behavior and limitations.
+See [`docs/API_MAPPING.md`](docs/API_MAPPING.md) for field-level behavior and limitations.
