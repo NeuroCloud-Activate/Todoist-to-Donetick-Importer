@@ -1,0 +1,22 @@
+{
+  "name": "todoist-donetick-importer",
+  "version": "0.2.0",
+  "description": "A lightweight Electron app for importing Todoist tasks into Donetick.",
+  "main": "src/main.js",
+  "productName": "Todoist Donetick Importer",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "start": "electron .",
+    "package:mac": "node scripts/package-macos-app.js",
+    "package:mac:release": "node scripts/package-macos-release.js",
+    "test": "node tests/mapper.test.js && node tests/import-overrides.test.js && node tests/donetick-auth.test.js && node tests/snapshot-cache.test.js",
+    "test:mapper": "node tests/mapper.test.js",
+    "test:import-overrides": "node tests/import-overrides.test.js",
+    "test:donetick-auth": "node tests/donetick-auth.test.js",
+    "test:cache": "node tests/snapshot-cache.test.js"
+  },
+  "devDependencies": {
+    "electron": "^42.3.0"
+  }
+}

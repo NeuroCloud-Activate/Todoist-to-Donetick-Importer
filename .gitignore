@@ -1,0 +1,14 @@
+AGENTS.md
+.repowise/
+.mcp.json
+.claude/
+.DS_Store
+*.log
+logs/
+node_modules/
+dist/
+out/
+coverage/
+.env
+.env.*
+*.local

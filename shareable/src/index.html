@@ -1,0 +1,221 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todoist to Donetick Importer</title>
+    <link rel="stylesheet" href="./styles.css">
+  </head>
+  <body>
+    <div class="app-shell">
+      <main class="workspace">
+        <section class="toolbar">
+          <div>
+            <h2>Task Import Workspace</h2>
+            <p id="statusText">Enter connection details, preview the translation, then import selected tasks.</p>
+          </div>
+          <div class="toolbar-actions">
+            <button id="saveSettingsBtn" class="secondary">Save Settings</button>
+            <button id="clearSettingsBtn" class="secondary danger">Clear Saved</button>
+          </div>
+        </section>
+
+        <section id="connections" class="panel">
+          <div class="panel-heading">
+            <div>
+              <h3>Connections</h3>
+              <p>Credentials are ordered by how the importer tries them: JWT Full API first, API key Full API second, external API last.</p>
+            </div>
+            <button id="testConnectionsBtn" class="primary">Test Connections</button>
+          </div>
+
+          <div class="credential-groups">
+            <section class="credential-group">
+              <div class="credential-copy">
+                <span class="method-rank">Source</span>
+                <h4>Todoist read access</h4>
+                <p>Read-only Sync API token used to cache the Todoist snapshot before import.</p>
+              </div>
+              <div class="credential-fields form-grid">
+                <label>
+                  <span>Todoist API token</span>
+                  <input id="todoistToken" type="password" autocomplete="off" placeholder="Paste your Todoist token">
+                </label>
+                <label>
+                  <span>Todoist API base</span>
+                  <input id="todoistApiBase" type="url" placeholder="https://api.todoist.com/api/v1">
+                </label>
+              </div>
+            </section>
+
+            <section class="credential-group">
+              <div class="credential-copy">
+                <span class="method-rank">Donetick target</span>
+                <h4>Server address</h4>
+                <p>The Donetick server the app will test, preview against, and import into.</p>
+              </div>
+              <div class="credential-fields form-grid">
+                <label>
+                  <span>Donetick server URL</span>
+                  <input id="donetickBaseUrl" type="text" autocomplete="off" placeholder="http://your-donetick-host">
+                </label>
+              </div>
+            </section>
+
+            <section class="credential-group preferred-method">
+              <div class="credential-copy">
+                <span class="method-rank">1. Preferred</span>
+                <h4>JWT login for Full API</h4>
+                <p>Best option for complete imports. Enables Full API features such as native labels, projects, due dates, subtasks, and recurrence.</p>
+              </div>
+              <div class="credential-fields form-grid">
+                <label>
+                  <span>Donetick username</span>
+                  <input id="donetickUsername" type="text" autocomplete="username" placeholder="Donetick username or email">
+                </label>
+                <label>
+                  <span>Donetick password</span>
+                  <input id="donetickPassword" type="password" autocomplete="current-password" placeholder="Used only for JWT login">
+                </label>
+              </div>
+            </section>
+
+            <section class="credential-group">
+              <div class="credential-copy">
+                <span class="method-rank">2. Preferred Alternative</span>
+                <h4>Existing JWT token</h4>
+                <p>Use this if you already have a Donetick bearer token and do not want to enter a password.</p>
+              </div>
+              <div class="credential-fields form-grid">
+                <label>
+                  <span>Donetick JWT token</span>
+                  <input id="donetickAuthToken" type="password" autocomplete="off" placeholder="Paste an existing Donetick JWT token">
+                </label>
+              </div>
+            </section>
+
+            <section class="credential-group">
+              <div class="credential-copy">
+                <span class="method-rank">3. Fallback</span>
+                <h4>API key for Full API fallback</h4>
+                <p>Used when JWT is unavailable. Some Donetick servers reject API keys for labels, so JWT is still recommended.</p>
+              </div>
+              <div class="credential-fields form-grid">
+                <label>
+                  <span>Donetick API key</span>
+                  <input id="donetickApiKey" type="password" autocomplete="off" placeholder="Paste your Donetick API key">
+                </label>
+              </div>
+            </section>
+          </div>
+        </section>
+
+        <section id="options" class="panel">
+          <div class="panel-heading">
+            <div>
+              <h3>Import Options</h3>
+              <p>Full mode preserves more structure. Simple mode writes only name, due date, and description.</p>
+            </div>
+          </div>
+
+          <div class="option-grid">
+            <label class="option">
+              <span>Donetick API mode</span>
+              <select id="donetickMode">
+                <option value="auto">Auto: Full API first</option>
+                <option value="full">Full API only</option>
+                <option value="simple">Simple external API fallback</option>
+              </select>
+              <small>Auto tries JWT Full API, then API-key Full API, then the limited external API only if needed.</small>
+            </label>
+            <label class="option">
+              <span>Default time for date-only Todoist tasks</span>
+              <input id="defaultDueTime" type="time" value="09:00">
+            </label>
+            <label class="check-option">
+              <input id="includeComments" type="checkbox">
+              <span>Include Todoist comments</span>
+            </label>
+            <label class="check-option">
+              <input id="includeReminders" type="checkbox">
+              <span>Include Todoist reminders</span>
+            </label>
+            <label class="check-option">
+              <input id="createProjects" type="checkbox">
+              <span>Create or match Donetick projects</span>
+            </label>
+            <label class="check-option">
+              <input id="createLabels" type="checkbox">
+              <span>Create or match Donetick labels</span>
+            </label>
+            <label class="check-option">
+              <input id="subtasksAsDonetick" type="checkbox">
+              <span>Import Todoist subtasks as Donetick subtasks</span>
+            </label>
+            <label class="check-option">
+              <input id="skipDuplicates" type="checkbox">
+              <span>Skip chores already imported from Todoist</span>
+            </label>
+            <label class="check-option">
+              <input id="syncTodoistBeforePreview" type="checkbox">
+              <span>Sync Todoist cache before preview</span>
+            </label>
+            <label class="check-option">
+              <input id="forceFullTodoistSync" type="checkbox">
+              <span>Force full Todoist sync next preview</span>
+            </label>
+          </div>
+        </section>
+
+        <section id="preview" class="panel">
+          <div class="panel-heading">
+            <div>
+              <h3>Preview</h3>
+              <p id="previewSummary">No Todoist data loaded yet.</p>
+            </div>
+            <div class="panel-actions">
+              <button id="previewBtn" class="primary">Preview Todoist Tasks</button>
+              <button id="clearCacheBtn" class="secondary">Clear Cache</button>
+              <button id="selectAllBtn" class="secondary">Select All</button>
+              <button id="selectNoneBtn" class="secondary">Select None</button>
+            </div>
+          </div>
+
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th class="select-col">Import</th>
+                  <th class="name-col">Donetick Name</th>
+                  <th class="source-col">Todoist Source</th>
+                  <th class="due-col">Due</th>
+                  <th class="priority-col">Priority</th>
+                  <th class="description-col">Donetick Description</th>
+                  <th class="status-col">Status</th>
+                </tr>
+              </thead>
+              <tbody id="previewRows">
+                <tr>
+                  <td colspan="7" class="empty">Preview will appear here.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section id="results" class="panel">
+          <div class="panel-heading">
+            <div>
+              <h3>Import Results</h3>
+              <p id="resultSummary">No import has run.</p>
+            </div>
+            <button id="importBtn" class="primary" disabled>Import Selected</button>
+          </div>
+          <div id="resultLog" class="log"></div>
+        </section>
+      </main>
+    </div>
+
+    <script src="./renderer.js"></script>
+  </body>
+</html>
